@@ -19,3 +19,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: EmailStr
+
+class LoginResponse(BaseModel):
+    user: User
+    token: str
