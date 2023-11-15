@@ -19,11 +19,19 @@ def get_user(db: Session, user_id: int):
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
-def update_users(db: Session, user_id: int, user: schemas.UserCreate):
+def update_users(db: Session, user_id: int, user: schemas.UserUpdate):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     db_user.name = user.name
     db_user.email = user.email
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+def update_users_password(db: Session, user_id: int, user: schemas.UserCreate):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     db_user.hashed_password = auth.get_password_hash(user.password)
+    db_user.name = user.name
+    db_user.email = user.email
     db.commit()
     db.refresh(db_user)
     return db_user
