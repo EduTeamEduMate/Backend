@@ -5,7 +5,7 @@ from database import engine
 from models import Base
 import schemas
 from fastapi import Depends
-import auth
+import authHelper as auth
 
 # Create the database tables
 Base.metadata.create_all(bind=engine)
